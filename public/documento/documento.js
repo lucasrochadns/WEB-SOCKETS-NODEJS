@@ -10,11 +10,25 @@ import {
   const textoEditor = document.getElementById("editor-texto");
   const tituloDocumento = document.getElementById("titulo-documento");
   const botaoExcluir = document.getElementById("excluir-documento");
-  
+  const listaUsuario = document.getElementById("usuarios-conectados");
   tituloDocumento.textContent = nomeDocumento || "Documento sem título";
   
-  selecionarDocumento(nomeDocumento);
   
+  function tratarAutorizacaoSucesso (payload){
+    selecionarDocumento({ nomeDocumento, nomeUsuario: payload.dadosUsuario.usuario});
+    console.log(payload.usuario);
+  }
+  
+  function atualizarInterfaceUsuarios(usuariosDocumentos){
+      listaUsuario.innerHTML = "";
+
+      usuariosDocumentos.forEach((usuarios) => {
+         listaUsuario.innerHTML += `
+         <li class="list-group-item">${usuarios}</li>
+         `;
+      });
+  }
+
   textoEditor.addEventListener("keyup", () => {
     emitirTextoEditor({
       texto: textoEditor.value,
@@ -37,4 +51,4 @@ import {
     }
   }
   
-  export { atualizaTextoEditor, alertarERedirecionar };
+  export { atualizaTextoEditor, alertarERedirecionar, tratarAutorizacaoSucesso, atualizarInterfaceUsuarios};
